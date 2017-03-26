@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TweeterPhile</string>
+    <string name="title_activity_timeline">Home Timeline</string>
+    <string name="login_label">Connect with Twitter</string>
+    <string name="file_not_found">file not found</string>
+    <string name="menu_tweet">Tweet</string>
+    <string name="button_tweet">Tweet</string>
+    <string name="characters">of 140 characters</string>
+    <string name="enter_tweet">Enter your tweet ...</string>
+
+</resources>
