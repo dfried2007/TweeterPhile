@@ -1,13 +1,9 @@
 package com.example.dfrie.tweeterphile.utils;
 
-import android.os.AsyncTask;
-
 import com.example.dfrie.tweeterphile.TwitterApplication;
 import com.example.dfrie.tweeterphile.restclient.TwitterClient;
 import com.example.dfrie.tweeterphile.restclient.models.Settings;
-import com.example.dfrie.tweeterphile.restclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.squareup.picasso.Request;
 
 import org.json.JSONObject;
 
@@ -48,6 +44,11 @@ public class TwitterUtils {
     }
 
 
+    public static String getCurrentTwitterDate() {
+        return TWITTER_FORMAT.format(new Date());
+    }
+
+
     public static String getCurrentScreenName() {
         TwitterClient client = TwitterApplication.getRestClient();
         final String[] retVal = new String[1];
@@ -68,15 +69,4 @@ public class TwitterUtils {
         return retVal[0];
     }
 
-
-
-
-
-
-
-    public static User getCurrentUserFrom(String screenName) {
-
-return null;
-
-    }
 }

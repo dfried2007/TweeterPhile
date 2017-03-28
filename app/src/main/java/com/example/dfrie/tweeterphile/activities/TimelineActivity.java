@@ -13,6 +13,8 @@ import com.example.dfrie.tweeterphile.R;
 import com.example.dfrie.tweeterphile.TwitterApplication;
 import com.example.dfrie.tweeterphile.restclient.TwitterClient;
 import com.example.dfrie.tweeterphile.restclient.models.Tweet;
+import com.example.dfrie.tweeterphile.restclient.models.User;
+import com.example.dfrie.tweeterphile.utils.TwitterUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -26,6 +28,8 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    public static final int SEND_TWEET_REQUEST = 100;
+
     private TwitterClient client;
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter adapter;
@@ -34,6 +38,9 @@ public class TimelineActivity extends AppCompatActivity {
 
     private long currentMaxId = 1L;
     private long currentMinId = Long.MAX_VALUE;
+
+    private User ghostUser = null;
+    private long nextGhost = -1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +99,7 @@ public class TimelineActivity extends AppCompatActivity {
                 // deserialize json, create models and load model data to ListView's adapter...
                 ArrayList<Tweet> newTweets = Tweet.fromJsonArray(response);
                 adapter.addAll(newTweets);
-                if (adapter.getCount()==0) {
+                if (adapter.getCount()!=0) {
                     // Assume the result set tweets always are ordered descending...
                     currentMaxId = newTweets.get(0).getId();
                 }
@@ -126,6 +133,8 @@ public class TimelineActivity extends AppCompatActivity {
                 // deserialize json, create models and  load model data to ListView's adapter...
                 ArrayList<Tweet> newTweets = Tweet.fromJsonArray(response);
                 if (newTweets.size()>0) {
+                    // First, clean out any ghost Tweets I may have added that match new Tweets...
+                    cleanOutGhostTweets(newTweets);
                     // Assume the result set tweets always are ordered descending...
                     for (int i = newTweets.size() - 1; i >= 0; i--) {
                         tweets.add(0, newTweets.get(i));
@@ -133,6 +142,33 @@ public class TimelineActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     currentMaxId = newTweets.get(0).getId();
                     retVal[0] = true;
+                }
+            }
+
+            /**
+             * We may have added some ghost tweets from the sub-activity, so now we must remove them...
+             * Ghost tweets have ids < 0, and are found only at the top of stack.
+             *
+             * @param newTweets
+             */
+            private void cleanOutGhostTweets(ArrayList<Tweet> newTweets) {
+                Tweet t, tt;
+                outer: for (int i = newTweets.size() - 1; i >= 0; i--) {
+                    t = newTweets.get(i);
+                    for (int j = 0; j < tweets.size(); j++) {
+                        tt = tweets.get(j);
+                        if (tt.getId() > 0) {
+                            if (j == 0) {
+                                break outer;
+                            }
+                            break;
+                        }
+                        if (t.getBody().equals(tt.getBody()) &&
+                                t.getUser().getScreenName().equals(tt.getUser().getScreenName())) {
+                            tweets.remove(j);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -169,11 +205,42 @@ public class TimelineActivity extends AppCompatActivity {
         if (id == R.id.action_tweet) {
             //Toast.makeText(this, "Tweet was selected...", Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), TweetActivity.class);
-            startActivity(i);
+            startActivityForResult(i, SEND_TWEET_REQUEST);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    // Handle the result of the sub-activity...
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == SEND_TWEET_REQUEST) {
+            // Extract name value from result extras
+            String _name = data.getExtras().getString("name");
+            String _body = data.getExtras().getString("body");
+            String _screenName = data.getExtras().getString("screen_name");
+            String _profileImageUrl = data.getExtras().getString("profile_image_url");
+
+            // Toast the name to display temporarily on screen
+            Toast.makeText(this, _name, Toast.LENGTH_SHORT).show();
+
+            if (ghostUser == null) {
+                ghostUser = new User();
+                ghostUser.id = -1L;
+                ghostUser.name = _name;
+                ghostUser.screenName = _screenName;
+                ghostUser.profileImageUrl = _profileImageUrl;
+            }
+
+            Tweet ghostTweet = new Tweet();
+            ghostTweet.id = --nextGhost;
+            ghostTweet.user = ghostUser;
+            ghostTweet.body = _body;
+            ghostTweet.timestamp = TwitterUtils.getCurrentTwitterDate();
+
+            tweets.add(0, ghostTweet);
+            adapter.notifyDataSetChanged();
+        }
+    }
 }

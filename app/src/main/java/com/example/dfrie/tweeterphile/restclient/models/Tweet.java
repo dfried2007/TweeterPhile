@@ -4,6 +4,7 @@ package com.example.dfrie.tweeterphile.restclient.models;
 
 import com.example.dfrie.tweeterphile.restclient.MyDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -21,13 +22,14 @@ import java.util.ArrayList;
 public class Tweet extends BaseModel {
     @PrimaryKey
     @Column
-    Long id;
+    public Long id;
     @Column
-    String timestamp;
+    public String timestamp;
     @Column
-    String body;
+    public String body;
 
-    User user;
+    @ForeignKey
+    public User user;
 
     public Tweet(){
         super();

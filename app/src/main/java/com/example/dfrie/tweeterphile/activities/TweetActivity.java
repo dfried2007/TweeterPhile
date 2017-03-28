@@ -43,6 +43,8 @@ public class TweetActivity extends AppCompatActivity {
     private TextView tvName;
     private TextView tvChars;
 
+    private String profileImageUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,8 @@ public class TweetActivity extends AppCompatActivity {
                         ArrayList<User> users = User.fromJsonArray(response2);
                         User user = users.get(0);
                         tvName.setText(user.getName());
-                        Picasso.with(getContext()).load(user.getProfileImageUrl())
+                        profileImageUrl = user.getProfileImageUrl();
+                        Picasso.with(getContext()).load(profileImageUrl)
                                 .placeholder(R.drawable.ic_twitter)
                                 .resize(300,300)
                                 .into(ivProfilePic);
@@ -124,8 +127,22 @@ public class TweetActivity extends AppCompatActivity {
                 client.postTweet(etTweet.getText().toString(), new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+/*
                         Intent i = new Intent(TweetActivity.this, TimelineActivity.class);
                         startActivity(i);
+*/
+                        // Prepare data intent
+                        Intent data = new Intent();
+                        // Pass relevant data back as a result
+                        data.putExtra("body", etTweet.getText().toString());
+                        data.putExtra("name", tvName.getText().toString());
+                        data.putExtra("screen_name", tvScreenName.getText().toString());
+                        data.putExtra("profile_image_url", profileImageUrl);
+
+                        // Activity finished ok, return the data
+                        setResult(RESULT_OK, data); // set result code and bundle data for response
+                        // closes the activity, pass data to parent...
+                        finish();
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
