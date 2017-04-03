@@ -56,12 +56,15 @@ public class TweetActivity extends AppCompatActivity {
         // diable the default toolbar title...
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        UserProfileFragment profileFragment = null;
         if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            UserProfileFragment profileFragment = UserProfileFragment.newInstance(null);
+            profileFragment = UserProfileFragment.newInstance(null);
             ft.replace(R.id.flProfile, profileFragment);
             ft.commit();
         }
+        final UserProfileFragment profileFragmentRef = profileFragment;
 
         tvChars = (TextView) findViewById(R.id.tvChars);
         etTweet = (EditText) findViewById(R.id.etTweet);
@@ -104,6 +107,7 @@ public class TweetActivity extends AppCompatActivity {
                         data.putExtra("screen_name", tvScreenName.getText().toString());
                         data.putExtra("profile_image_url", profileImageUrl);
 */
+                        User user = profileFragmentRef.getCurrentUser();
                         data.putExtra("user", Parcels.wrap(user));
 
                         // Activity finished ok, return the data

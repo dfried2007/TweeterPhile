@@ -95,6 +95,14 @@ public class UserProfileFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * EsXpose the user.
+     * @return
+     */
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

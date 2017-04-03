@@ -43,28 +43,29 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
+* [Y] Tabbed Navigation with ViewPager
 * [Y] After inspecting the profile background image pixels, the view's text color is set
 either black or white to stand out over the background image.
 * [Y] Profile background images are cropped to fit the view, respecting the image aspect ratios.
 If no background image is defined, as is the case of @POTUS, the user's background color is used on
  the header.
-* [Y] Lean Activities with all view and data fetching logic in the Fragments.
-* [Y] Tabbed Navigation with ViewPager
+* [Y] Lean Activities with all view and data fetching logic within the Fragments.
 
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:  ()
+Here's a walkthrough of implemented user stories:  (http://i.imgur.com/cYjszOX.gifv)
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/cYjszOX.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
-Periodically, the Twitter timeline API seems to return cached lists of tweets after a certain 
-amount of history is gotten.
+Describe any challenges encountered while building the app:  
+- Periodically, the Twitter timeline API seems to return cached lists of tweets after a certain 
+amount of history has been given.
+- One must be very wary of data retrieved from the web; several items were null, when I expected them to be returned from API calls.
 
 ## Open-source libraries used
 
