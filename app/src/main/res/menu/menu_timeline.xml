@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools" tools:context=".TimelineActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".TimelineActivity" >
 
     <item
         android:id="@+id/action_tweet"
-        android:orderInCategory="1"
         android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="1"
+        android:title="@string/menu_tweet"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@mipmap/ic_user_profile"
+        android:orderInCategory="2"
+        android:title="@string/menu_profile"
         app:showAsAction="ifRoom|withText"
-        android:title="@string/menu_tweet">
-    </item>
+        android:onClick="onProfileView" />
 
 </menu>

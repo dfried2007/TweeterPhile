@@ -7,6 +7,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +26,9 @@ public class TwitterUtils {
 
     // Wed Mar 07 01:27:09 +0000 2007
     public static final SimpleDateFormat TWITTER_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy");
+
+    public static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("###,###,###,###");
+
 
     public static Date parseDate(String s) {
         return SDF.parse(s, new ParsePosition(0));
@@ -48,7 +52,14 @@ public class TwitterUtils {
         return TWITTER_FORMAT.format(new Date());
     }
 
+    public static String formatInteger(int i) {
+        return NUMBER_FORMAT.format(i);
+    }
 
+    /**
+     * Not currently used.
+     * @return
+     */
     public static String getCurrentScreenName() {
         TwitterClient client = TwitterApplication.getRestClient();
         final String[] retVal = new String[1];

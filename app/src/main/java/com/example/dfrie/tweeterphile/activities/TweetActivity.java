@@ -2,6 +2,7 @@ package com.example.dfrie.tweeterphile.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -9,26 +10,21 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dfrie.tweeterphile.R;
 import com.example.dfrie.tweeterphile.TwitterApplication;
+import com.example.dfrie.tweeterphile.fragments.UserProfileFragment;
 import com.example.dfrie.tweeterphile.restclient.TwitterClient;
-import com.example.dfrie.tweeterphile.restclient.models.Settings;
 import com.example.dfrie.tweeterphile.restclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
+import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
 import static com.loopj.android.http.AsyncHttpClient.log;
-import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
 /**
  * Created by dfrie on 3/25/2017.
@@ -36,14 +32,12 @@ import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
 public class TweetActivity extends AppCompatActivity {
 
-    private TextView tvScreenName;
     private EditText etTweet;
     private Button btTweet;
-    private ImageView ivProfilePic;
-    private TextView tvName;
     private TextView tvChars;
+    private TextView tvErrorMsg;
 
-    private String profileImageUrl;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,49 +56,17 @@ public class TweetActivity extends AppCompatActivity {
         // diable the default toolbar title...
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ivProfilePic = (ImageView) findViewById(R.id.ivProfilePic);
-        tvName = (TextView) findViewById(R.id.tvName);
-        tvScreenName = (TextView) findViewById(R.id.tvScreenName);
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            UserProfileFragment profileFragment = UserProfileFragment.newInstance(null);
+            ft.replace(R.id.flProfile, profileFragment);
+            ft.commit();
+        }
+
         tvChars = (TextView) findViewById(R.id.tvChars);
         etTweet = (EditText) findViewById(R.id.etTweet);
         btTweet = (Button) findViewById(R.id.btTweet);
-
-        // GET account/settings to get screen name
-        final TwitterClient client = TwitterApplication.getRestClient();
-        client.getAccountSettings(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Settings settings = new Settings(response);
-                tvScreenName.setText(settings.getScreenName());
-                // GET users/lookup to get my user info...
-                client.getUserDetails(settings.getScreenName(), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response2) {
-                        ArrayList<User> users = User.fromJsonArray(response2);
-                        User user = users.get(0);
-                        tvName.setText(user.getName());
-                        profileImageUrl = user.getProfileImageUrl();
-                        Picasso.with(getContext()).load(profileImageUrl)
-                                .placeholder(R.drawable.ic_twitter)
-                                .resize(300,300)
-                                .into(ivProfilePic);
-                    }
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        log.d("debug", errorResponse.toString());
-                        log.d("debug", throwable.getMessage());
-                        tvName.setText(throwable.getMessage());
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                log.d("debug", errorResponse.toString());
-                log.d("debug", throwable.getMessage());
-                tvScreenName.setText(throwable.getMessage());
-            }
-        });
+        tvErrorMsg = (TextView) findViewById(R.id.tvErrorMsg);
 
         etTweet.addTextChangedListener(new TextWatcher() {
             @Override
@@ -124,20 +86,25 @@ public class TweetActivity extends AppCompatActivity {
         btTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.postTweet(etTweet.getText().toString(), new JsonHttpResponseHandler() {
+                String str = etTweet.getText().toString();
+                if (str.length() == 0) {
+                    tvErrorMsg.setText(R.string.enter_some_text);
+                    return;
+                }
+                TwitterClient client = TwitterApplication.getRestClient();
+                client.postTweet(str, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-/*
-                        Intent i = new Intent(TweetActivity.this, TimelineActivity.class);
-                        startActivity(i);
-*/
                         // Prepare data intent
                         Intent data = new Intent();
                         // Pass relevant data back as a result
                         data.putExtra("body", etTweet.getText().toString());
+/*
                         data.putExtra("name", tvName.getText().toString());
                         data.putExtra("screen_name", tvScreenName.getText().toString());
                         data.putExtra("profile_image_url", profileImageUrl);
+*/
+                        data.putExtra("user", Parcels.wrap(user));
 
                         // Activity finished ok, return the data
                         setResult(RESULT_OK, data); // set result code and bundle data for response
@@ -148,7 +115,7 @@ public class TweetActivity extends AppCompatActivity {
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         log.d("debug", errorResponse.toString());
                         log.d("debug", throwable.getMessage());
-                        tvName.setText(throwable.getMessage());
+                        tvErrorMsg.setText(throwable.getMessage());
                     }
                 });
             }

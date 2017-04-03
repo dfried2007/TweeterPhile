@@ -14,40 +14,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/ivProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/toolbar"
-        android:padding="5dp"
-        app:srcCompat="@drawable/ic_twitter" />
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/flProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/tvName"
-        style="@android:style/Widget.TextView.PopupMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_toLeftOf="@+id/ivProfilePic"
-        android:layout_toStartOf="@+id/ivProfilePic"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tvScreenName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvName"
-        android:layout_toLeftOf="@+id/ivProfilePic"
-        android:layout_toStartOf="@+id/ivProfilePic"
-        android:text="TextView" />
+    </FrameLayout>
 
     <EditText
         android:id="@+id/etTweet"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@id/ivProfilePic"
+        android:layout_below="@id/flProfile"
         android:ems="12"
         android:foregroundTint="@android:drawable/bottom_bar"
         android:hint="@string/enter_tweet"
@@ -87,7 +66,17 @@
         android:layout_toLeftOf="@+id/btTweet"
         android:layout_toStartOf="@+id/btTweet"
         android:paddingEnd="5dp"
-        android:paddingRight="5dp" />
+        android:paddingRight="5dp"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvErrorMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btTweet"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        tools:text="TextView" />
 
 
 </RelativeLayout>

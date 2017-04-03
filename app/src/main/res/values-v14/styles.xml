@@ -9,4 +9,11 @@
         <!-- API 14 theme customizations can go here. -->
     </style>
 
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="windowActionBar">false</item>
+
+    </style>
+
 </resources>

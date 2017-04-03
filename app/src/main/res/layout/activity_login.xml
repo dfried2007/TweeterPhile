@@ -2,12 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/hippiedetails"
+    android:hapticFeedbackEnabled="false"
+    android:layoutMode="clipBounds"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/hippiedetails"
-    tools:context="com.example.dfrie.tweeterphile.activities.LoginActivity" >
+    tools:context="com.example.dfrie.tweeterphile.activities.LoginActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:elegantTextHeight="true"
+        android:fontFamily="cursive"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="70sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:elegantTextHeight="true"
+        android:fontFamily="cursive"
+        android:text="II"
+        android:textColor="@android:color/white"
+        android:textSize="70sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btLogin"
@@ -15,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/tvTitle2"
         android:layout_margin="20dp"
         android:background="@drawable/round_button"
         android:drawableLeft="@drawable/ic_twitter"
@@ -26,20 +56,6 @@
         android:text="@string/login_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Menu"
         android:textSize="17sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp"
-        android:elegantTextHeight="true"
-        android:fontFamily="cursive"
-        android:text="@string/app_name"
-        android:textColor="@android:color/white"
-        android:textSize="70sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

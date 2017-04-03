@@ -1,9 +1,13 @@
 package com.example.dfrie.tweeterphile.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.example.dfrie.tweeterphile.R;
@@ -46,7 +50,17 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// Uses the client to initiate OAuth authorization
 	// This should be tied to a button used to menu_login
 	public void loginToRest(View view) {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
+            this.finishAffinity();
+        }
 		getClient().connect();
 	}
 
+	private Boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager
+				= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
 }

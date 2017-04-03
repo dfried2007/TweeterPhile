@@ -9,5 +9,18 @@
     <string name="button_tweet">Tweet</string>
     <string name="characters">of 140 characters</string>
     <string name="enter_tweet">Enter your tweet ...</string>
+    <string name="enter_some_text">Please enter some text.</string>
+    <string name="up_to_date">You have %d new tweets.</string>
+    <string name="timeline_bad_params">Can not process both MaxId and SinceId</string>
+    <string name="timeline">Home</string>
+    <string name="mentions">Mentions</string>
+    <string name="menu_profile">Profile</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="bullet">•</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_network">No Network!  Logging out...</string>
 
 </resources>

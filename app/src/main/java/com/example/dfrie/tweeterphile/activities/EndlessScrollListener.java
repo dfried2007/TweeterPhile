@@ -37,7 +37,7 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
     {
-        // If it isn't currently loading, we check to see if the user is requesting
+        // If it isn't currently loading, we check to see if the currentUser is requesting
         // the newest tweets and need to see if there is more recent data to load.
         // We execute onLoadMore(-1) to fetch that data.
         if (!loading && firstVisibleItem==0 && firstVisibleItem!=mLastFirstVisibleItem) {
@@ -63,7 +63,7 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
         }
 
         // If it isn't currently loading, we check to see if we have breached
-        // the visibleThreshold and need to reload more data.
+        // the visibleThreshold and need to     reload more data.
         // If we do need to reload some more data, we execute onLoadMore to fetch the data.
         if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount ) {
             loading = onLoadMore(currentPage + 1, totalItemCount);

@@ -21,7 +21,7 @@ import java.util.List;
 
 import static com.example.dfrie.tweeterphile.R.id.imageView;
 import static com.example.dfrie.tweeterphile.R.id.tvBody;
-import static com.example.dfrie.tweeterphile.R.id.tvScreenName;
+import static com.example.dfrie.tweeterphile.R.id.tvComment;
 import static com.example.dfrie.tweeterphile.R.id.tvTimestamp;
 import static com.example.dfrie.tweeterphile.R.id.tvTimestamp2;
 import static com.example.dfrie.tweeterphile.R.id.tvUserName;
@@ -59,7 +59,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.imageView = (ImageView)convertView.findViewById(imageView);
             viewHolder.tvBody = (TextView)convertView.findViewById(tvBody);
             viewHolder.tvUserName = (TextView)convertView.findViewById(tvUserName);
-            viewHolder.tvScreenName = (TextView)convertView.findViewById(tvScreenName);
+            viewHolder.tvScreenName = (TextView)convertView.findViewById(tvComment);
             viewHolder.tvTimestamp = (TextView)convertView.findViewById(tvTimestamp);
             viewHolder.tvTimestamp2 = (TextView)convertView.findViewById(tvTimestamp2);
             convertView.setTag(viewHolder);
@@ -88,6 +88,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         } else {
             viewHolder.tvTimestamp2.setVisibility(View.VISIBLE);
         }
+
+        // This is for the click through to a profile...
+        viewHolder.imageView.setTag(tweet.getUser().getScreenName());
 
         viewHolder.imageView.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl())

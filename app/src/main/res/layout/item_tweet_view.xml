@@ -13,7 +13,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
-        app:srcCompat="@drawable/ic_twitter" />
+        app:srcCompat="@drawable/ic_twitter"
+        android:onClick="showUserProfile"/>
 
     <TextView
         android:id="@+id/tvUserName"
@@ -27,7 +28,7 @@
         android:textColor="@color/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/tvScreenName"
+        android:id="@+id/tvComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUserName"
@@ -41,7 +42,7 @@
         android:linksClickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvScreenName"
+        android:layout_below="@+id/tvComment"
         android:layout_toRightOf="@+id/imageView"
         android:paddingBottom="3dp"
         android:paddingRight="3dp"
